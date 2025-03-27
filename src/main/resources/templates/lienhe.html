@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Liên hệ - Shop Giày Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff758c, #ff7eb3); /* Gradient giống như trang chủ và sản phẩm */
+            color: white; /* Để chữ có màu trắng */
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 10px;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 1.1em;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ffcc00 !important;
+            text-decoration: underline;
+        }
+
+        .contact-container {
+            background: rgba(255, 255, 255, 0.8); /* Nền sáng cho khu vực liên hệ */
+            border-radius: 15px;
+            padding: 20px;
+            color: black;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 255, 0.3);
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/869/869636.png" alt="Logo" width="40">
+                <strong>Shop Giày</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/giay/hien-thi}">🏠 Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/giay/sanpham}">👟 Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/giay/giohang}">🛒 Giỏ hàng</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/giay/lienhe}">📞 Liên hệ</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container mt-4 text-center">
+    <div class="contact-container">
+        <h2>📞 Thông tin liên hệ</h2>
+        <p>📍 Địa chỉ: <strong>123 Đường ABC, Quận 1, TP.HCM</strong></p>
+        <p>📞 Hotline: <strong>0123 456 789</strong></p>
+    </div>
+</section>
+
+<footer class="footer text-white text-center p-3 mt-4">
+    <p>&copy; 2025 Shop Giày Online | Liên hệ: shopgiay@example.com</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

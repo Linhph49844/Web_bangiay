@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Nhân Viên - Shop Giày Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            transition: transform 0.3s ease, color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ff7eb3 !important;
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            font-size: 1em;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .btn-custom {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            background-color: #ff3b3f;
+        }
+
+        .btn-warning {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .btn-warning:hover {
+            transform: scale(1.05);
+            background-color: #ffbb33;
+        }
+
+        /* Modal styles */
+        .modal-header {
+            background-color: #ff7eb3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/869/869636.png" alt="Logo" width="40">
+                <strong>Shop Giày</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/quanli/hien-thi">🏠 Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/nhan-vien">👨‍💼 Nhân viên</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/khach-hang">👥 Khách hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/doanh-thu">📊 Doanh thu</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container mt-5">
+    <h1 class="text-center">👑 Quản Lý Nhân Viên</h1>
+
+    <!-- Tìm kiếm nhân viên -->
+    <div class="text-center mb-3">
+        <input type="text" id="searchEmployee" class="form-control" placeholder="Tìm kiếm nhân viên theo tên hoặc trạng thái...">
+    </div>
+
+    <!-- Employee table -->
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên nhân viên</th>
+            <th>Vai trò</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody id="employeeTableBody">
+        <!-- Dữ liệu nhân viên sẽ được hiển thị ở đây -->
+        </tbody>
+    </table>
+</section>
+
+<!-- Modal to add new employee -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmployeeModalLabel">Thêm Nhân Viên Mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/quanli/them-nhan-vien">
+                    <div class="mb-3">
+                        <label for="employeeName" class="form-label">Tên nhân viên</label>
+                        <input type="text" class="form-control" id="employeeName" name="employeeName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Vai trò</label>
+                        <select class="form-control" id="role" name="role">
+                            <option value="employee">Nhân viên</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Trạng thái</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="active">Đang làm</option>
+                            <option value="inactive">Đã Nghỉ</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm nhân viên</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal to edit employee -->
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEmployeeModalLabel">Chỉnh sửa Nhân Viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/quanli/sua-nhan-vien">
+                    <div class="mb-3">
+                        <label for="editEmployeeName" class="form-label">Tên nhân viên</label>
+                        <input type="text" class="form-control" id="editEmployeeName" name="employeeName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editStatus" class="form-label">Trạng thái</label>
+                        <select class="form-control" id="editStatus" name="status">
+                            <option value="active">Đang làm</option>
+                            <option value="inactive">Đã nghỉ</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="editEmployeeId" name="employeeId">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-white text-center p-3 mt-4">
+    <p>&copy; 2025 Shop Giày Online | Liên hệ: shopgiay@example.com</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Dữ liệu mẫu của nhân viên
+    const employees = [
+        { id: 1, name: 'Nguyễn Văn A', role: 'Nhân viên', status: 'Đang làm' },
+        { id: 2, name: 'Trần Thị B', role: 'Nhân viên', status: 'Đang làm' },
+        { id: 3, name: 'Lê Văn C', role: 'Nhân viên', status: 'Đang làm' },
+        { id: 4, name: 'Ngô Thị D', role: 'Nhân viên', status: 'Nghỉ làm' }
+    ];
+
+    // Hàm hiển thị danh sách nhân viên
+    function displayEmployees(data) {
+        const tableBody = document.getElementById('employeeTableBody');
+        tableBody.innerHTML = ''; // Clear the table before adding new rows
+
+        data.forEach(employee => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${employee.id}</td>
+                <td>${employee.name}</td>
+                <td>${employee.role}</td>
+                <td>${employee.status}</td>
+                <td><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal" data-id="${employee.id}" data-name="${employee.name}" data-status="${employee.status}">Chỉnh sửa</button></td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Hiển thị tất cả nhân viên
+    displayEmployees(employees);
+
+    // Tìm kiếm nhân viên
+    const searchInput = document.getElementById('searchEmployee');
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredEmployees = employees.filter(employee =>
+            employee.name.toLowerCase().includes(searchTerm) ||
+            employee.status.toLowerCase().includes(searchTerm)
+        );
+        displayEmployees(filteredEmployees);
+    });
+
+    // Sử dụng JavaScript để truyền dữ liệu vào modal chỉnh sửa
+    const editEmployeeModal = document.getElementById('editEmployeeModal');
+    editEmployeeModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const employeeId = button.getAttribute('data-id');
+        const employeeName = button.getAttribute('data-name');
+        const employeeStatus = button.getAttribute('data-status');
+
+        const modalTitle = editEmployeeModal.querySelector('.modal-title');
+        const inputName = editEmployeeModal.querySelector('#editEmployeeName');
+        const selectStatus = editEmployeeModal.querySelector('#editStatus');
+        const inputId = editEmployeeModal.querySelector('#editEmployeeId');
+
+        modalTitle.textContent = `Chỉnh sửa nhân viên: ${employeeName}`;
+        inputName.value = employeeName;
+        selectStatus.value = employeeStatus;
+        inputId.value = employeeId;
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống Kê Doanh Thu - Shop Giày Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            transition: transform 0.3s ease, color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ff7eb3 !important;
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            font-size: 1em;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Table styles */
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        /* Button hover effects */
+        .btn-custom {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            background-color: #ff3b3f;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/869/869636.png" alt="Logo" width="40">
+                <strong>Shop Giày</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/quanli/hien-thi">🏠 Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/nhan-vien">👨‍💼 Nhân viên</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/khach-hang">👥 Khách hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/doanh-thu">📊 Doanh thu</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container mt-5">
+    <h1 class="text-center">👑 Thống Kê Doanh Thu</h1>
+
+    <!-- Tổng doanh thu -->
+    <div class="text-center mb-4">
+        <h3>Tổng doanh thu: <span id="total-revenue">0</span> VND</h3>
+    </div>
+
+    <!-- Biểu đồ doanh thu theo ngày -->
+    <h4>Doanh thu theo ngày</h4>
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Ngày</th>
+            <th>Doanh thu</th>
+        </tr>
+        </thead>
+        <tbody id="revenue-table">
+        <!-- Dữ liệu doanh thu theo ngày sẽ được hiển thị ở đây -->
+        </tbody>
+    </table>
+
+    <!-- Tổng số đơn hàng -->
+    <h4>Tổng số đơn hàng theo trạng thái</h4>
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Trạng thái</th>
+            <th>Số đơn hàng</th>
+        </tr>
+        </thead>
+        <tbody id="order-status-table">
+        <!-- Dữ liệu tổng số đơn hàng sẽ được hiển thị ở đây -->
+        </tbody>
+    </table>
+
+    <!-- Tổng số thanh toán -->
+    <h4>Tổng số thanh toán</h4>
+    <div class="text-center mb-4">
+        <h3 id="total-payments">0</h3>
+    </div>
+</section>
+
+<footer class="footer text-white text-center p-3 mt-4">
+    <p>&copy; 2025 Shop Giày Online | Liên hệ: shopgiay@example.com</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Hàm lấy và hiển thị tổng doanh thu
+    function fetchTotalRevenue() {
+        // Thực hiện truy vấn tổng doanh thu từ API hoặc cơ sở dữ liệu
+        document.getElementById('total-revenue').innerText = '100000000 VND'; // Ví dụ, thay bằng dữ liệu thực tế
+    }
+
+    // Hàm lấy và hiển thị doanh thu theo ngày
+    function fetchRevenueByDate() {
+        const revenueData = [
+            { date: '2025-03-01', total_revenue: '15000000 VND' },
+            { date: '2025-03-02', total_revenue: '16000000 VND' },
+            { date: '2025-03-03', total_revenue: '17000000 VND' }
+        ];
+
+        const tableBody = document.getElementById('revenue-table');
+        revenueData.forEach(item => {
+            const row = `<tr>
+                <td>${item.date}</td>
+                <td>${item.total_revenue}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // Hàm lấy và hiển thị tổng số đơn hàng theo trạng thái
+    function fetchOrderStatus() {
+        const orderStatusData = [
+            { status: 'Đang xử lý', total_orders: 10 },
+            { status: 'Đã thanh toán', total_orders: 25 },
+            { status: 'Đã hủy', total_orders: 5 }
+        ];
+
+        const tableBody = document.getElementById('order-status-table');
+        orderStatusData.forEach(item => {
+            const row = `<tr>
+                <td>${item.status}</td>
+                <td>${item.total_orders}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    // Hàm lấy và hiển thị tổng số thanh toán
+    function fetchTotalPayments() {
+        document.getElementById('total-payments').innerText = '50000000 VND'; // Ví dụ, thay bằng dữ liệu thực tế
+    }
+
+    // Gọi các hàm khi trang tải
+    window.onload = function() {
+        fetchTotalRevenue();
+        fetchRevenueByDate();
+        fetchOrderStatus();
+        fetchTotalPayments();
+    };
+</script>
+
+</body>
+</html>

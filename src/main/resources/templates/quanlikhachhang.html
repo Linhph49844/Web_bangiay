@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Khách Hàng - Shop Giày Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            transition: transform 0.3s ease, color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ff7eb3 !important;
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            font-size: 1em;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .btn-custom {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+            background-color: #ff3b3f;
+        }
+
+        /* Modal styles */
+        .modal-header {
+            background-color: #ff7eb3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://cdn-icons-png.flaticon.com/128/869/869636.png" alt="Logo" width="40">
+                <strong>Shop Giày</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/quanli/hien-thi">🏠 Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/nhan-vien">👨‍💼 Nhân viên</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/khach-hang">👥 Khách hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/doanh-thu">📊 Doanh thu</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="container mt-5">
+    <h1 class="text-center">👑 Quản Lý Khách Hàng</h1>
+
+    <!-- Search bar for customers -->
+    <div class="mb-3">
+        <input type="text" class="form-control" id="searchCustomer" placeholder="Tìm kiếm khách hàng...">
+    </div>
+
+    <!-- Customer table -->
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên khách hàng</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
+        </tr>
+        </thead>
+        <tbody id="customerTableBody">
+        <!-- Customers data will be displayed here -->
+        </tbody>
+    </table>
+</section>
+
+<footer class="footer text-white text-center p-3 mt-4">
+    <p>&copy; 2025 Shop Giày Online | Liên hệ: shopgiay@example.com</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Sample customer data (this should be fetched dynamically in a real application)
+    const customers = [
+        { id: 1, name: 'Nguyễn Văn A', email: 'customer1@example.com', address: 'Hà Nội, Việt Nam' },
+        { id: 2, name: 'Phạm Thị B', email: 'customer2@example.com', address: 'TP.HCM, Việt Nam' },
+        { id: 3, name: 'Trần Thị C', email: 'customer3@example.com', address: 'Đà Nẵng, Việt Nam' },
+        { id: 4, name: 'Lê Văn D', email: 'customer4@example.com', address: 'Hải Phòng, Việt Nam' },
+        { id: 5, name: 'Ngô Thị E', email: 'customer5@example.com', address: 'Cần Thơ, Việt Nam' },
+        { id: 6, name: 'Bùi Thị F', email: 'customer6@example.com', address: 'Hà Nội, Việt Nam' },
+        { id: 7, name: 'Mai Văn G', email: 'customer7@example.com', address: 'TP.HCM, Việt Nam' },
+        { id: 8, name: 'Đào Thị H', email: 'customer8@example.com', address: 'Vũng Tàu, Việt Nam' },
+        { id: 9, name: 'Vũ Thị I', email: 'customer9@example.com', address: 'Huế, Việt Nam' },
+        { id: 10, name: 'Hoàng Văn J', email: 'customer10@example.com', address: 'Bình Dương, Việt Nam' }
+    ];
+
+    // Function to display customer data
+    function displayCustomers(customersData) {
+        const customerTableBody = document.getElementById('customerTableBody');
+        customerTableBody.innerHTML = ''; // Clear the table before adding new rows
+
+        customersData.forEach(customer => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${customer.id}</td>
+                <td>${customer.name}</td>
+                <td>${customer.email}</td>
+                <td>${customer.address}</td>
+            `;
+            customerTableBody.appendChild(row);
+        });
+    }
+
+    // Display all customers initially
+    displayCustomers(customers);
+
+    // Search functionality
+    const searchInput = document.getElementById('searchCustomer');
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredCustomers = customers.filter(customer =>
+            customer.name.toLowerCase().includes(searchTerm) ||
+            customer.email.toLowerCase().includes(searchTerm) ||
+            customer.address.toLowerCase().includes(searchTerm)
+        );
+        displayCustomers(filteredCustomers);
+    });
+</script>
+
+</body>
+</html>
