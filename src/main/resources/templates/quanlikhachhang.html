@@ -12,8 +12,14 @@
         }
 
         .navbar {
-            background: rgba(0, 0, 0, 0.85);
+            background: linear-gradient(90deg, red, blue, purple); /* 3 màu: đỏ, xanh, tím */
+            background-size: 300% 100%; /* Tạo không gian rộng để hiệu ứng di chuyển */
+            animation: rainbow 5s linear infinite; /* Hiệu ứng chạy màu */
             padding: 15px;
+        }
+
+        .navbar:hover {
+            background-size: 400% 100%; /* Khi hover sẽ tăng độ rộng của gradient */
         }
 
         .nav-link {
@@ -36,23 +42,16 @@
             box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .table th, .table td {
-            vertical-align: middle;
-        }
-
-        .btn-custom {
-            transition: transform 0.3s, background-color 0.3s;
-        }
-
-        .btn-custom:hover {
-            transform: scale(1.05);
-            background-color: #ff3b3f;
-        }
-
-        /* Modal styles */
-        .modal-header {
-            background-color: #ff7eb3;
-            color: white;
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 0%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
         }
     </style>
 </head>
@@ -61,7 +60,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/quanli/hien-thi">
                 <img src="https://cdn-icons-png.flaticon.com/128/869/869636.png" alt="Logo" width="40">
                 <strong>Shop Giày</strong>
             </a>
@@ -73,6 +72,7 @@
                     <li class="nav-item"><a class="nav-link" href="/quanli/hien-thi">🏠 Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="/quanli/nhan-vien">👨‍💼 Nhân viên</a></li>
                     <li class="nav-item"><a class="nav-link" href="/quanli/khach-hang">👥 Khách hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/quanli/san-pham">👟 Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="/quanli/doanh-thu">📊 Doanh thu</a></li>
                 </ul>
             </div>
@@ -85,7 +85,10 @@
 
     <!-- Search bar for customers -->
     <div class="mb-3">
-        <input type="text" class="form-control" id="searchCustomer" placeholder="Tìm kiếm khách hàng...">
+        <form method="get" action="/quanli/khach-hang">
+            <input type="text" name="query" placeholder="Tìm kiếm khách hàng..." class="form-control" />
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </form>
     </div>
 
     <!-- Customer table -->
@@ -94,12 +97,27 @@
         <tr>
             <th>ID</th>
             <th>Tên khách hàng</th>
+            <th>Tên tài khoản</th>
+            <th>Mật khẩu</th>
+            <th>Số điện thoại</th>
             <th>Email</th>
             <th>Địa chỉ</th>
+            <th>Hành động</th>
         </tr>
         </thead>
-        <tbody id="customerTableBody">
-        <!-- Customers data will be displayed here -->
+        <tbody>
+        <tr th:each="khachHang : ${listKhachHang}">
+            <td th:text="${khachHang.id}"></td>
+            <td th:text="${khachHang.name}"></td>
+            <td th:text="${khachHang.username}"></td>
+            <td th:text="${khachHang.password}"></td>
+            <td th:text="${khachHang.sdt}"></td>
+            <td th:text="${khachHang.email}"></td>
+            <td th:text="${khachHang.diachi}"></td>
+            <td>
+                <a th:href="@{/quanli/khach-hang/edit/{id}(id=${khachHang.id})}" class="btn btn-warning">Chỉnh sửa</a>
+            </td>
+        </tr>
         </tbody>
     </table>
 </section>
@@ -109,53 +127,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Sample customer data (this should be fetched dynamically in a real application)
-    const customers = [
-        { id: 1, name: 'Nguyễn Văn A', email: 'customer1@example.com', address: 'Hà Nội, Việt Nam' },
-        { id: 2, name: 'Phạm Thị B', email: 'customer2@example.com', address: 'TP.HCM, Việt Nam' },
-        { id: 3, name: 'Trần Thị C', email: 'customer3@example.com', address: 'Đà Nẵng, Việt Nam' },
-        { id: 4, name: 'Lê Văn D', email: 'customer4@example.com', address: 'Hải Phòng, Việt Nam' },
-        { id: 5, name: 'Ngô Thị E', email: 'customer5@example.com', address: 'Cần Thơ, Việt Nam' },
-        { id: 6, name: 'Bùi Thị F', email: 'customer6@example.com', address: 'Hà Nội, Việt Nam' },
-        { id: 7, name: 'Mai Văn G', email: 'customer7@example.com', address: 'TP.HCM, Việt Nam' },
-        { id: 8, name: 'Đào Thị H', email: 'customer8@example.com', address: 'Vũng Tàu, Việt Nam' },
-        { id: 9, name: 'Vũ Thị I', email: 'customer9@example.com', address: 'Huế, Việt Nam' },
-        { id: 10, name: 'Hoàng Văn J', email: 'customer10@example.com', address: 'Bình Dương, Việt Nam' }
-    ];
-
-    // Function to display customer data
-    function displayCustomers(customersData) {
-        const customerTableBody = document.getElementById('customerTableBody');
-        customerTableBody.innerHTML = ''; // Clear the table before adding new rows
-
-        customersData.forEach(customer => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${customer.id}</td>
-                <td>${customer.name}</td>
-                <td>${customer.email}</td>
-                <td>${customer.address}</td>
-            `;
-            customerTableBody.appendChild(row);
-        });
-    }
-
-    // Display all customers initially
-    displayCustomers(customers);
-
-    // Search functionality
-    const searchInput = document.getElementById('searchCustomer');
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filteredCustomers = customers.filter(customer =>
-            customer.name.toLowerCase().includes(searchTerm) ||
-            customer.email.toLowerCase().includes(searchTerm) ||
-            customer.address.toLowerCase().includes(searchTerm)
-        );
-        displayCustomers(filteredCustomers);
-    });
-</script>
 
 </body>
 </html>

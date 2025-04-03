@@ -6,27 +6,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "acc_nhanvien")
+@Table(name = "acc_nhanvien") // Bảng trong cơ sở dữ liệu
 public class AccNhanVien {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(name = "username", nullable = false)
+    private String username;  // Tên tài khoản
 
-    private String username;
+    @Column(name = "password", nullable = false)
+    private String password;  // Mật khẩu
 
-    private String password;
+    @Column(name = "name", nullable = false)
+    private String name;  // Tên nhân viên
 
-    private String status;
+    @Column(name = "sdt")
+    private String sdt;  // Số điện thoại
 
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
+    @Column(name = "email")
+    private String email;  // Email nhân viên
+
+    @Column(name = "status", nullable = false)
+    private String status = "Đang làm";  // Trạng thái: "Đang làm", "Đã nghỉ"
+
+    @Column(name = "start_date")
+    private java.sql.Date startDate;  // Ngày bắt đầu làm việc
+
+    @ManyToOne(fetch = FetchType.LAZY)  // Quan hệ với bảng roles
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    private Role role;  // Liên kết với bảng roles
+
 }

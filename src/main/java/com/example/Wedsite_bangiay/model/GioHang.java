@@ -16,17 +16,16 @@ public class GioHang {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;  // ID của giỏ hàng
 
-    // Ánh xạ với sản phẩm
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private SanPham sanPham;
+    @ManyToOne(fetch = FetchType.LAZY)  // Liên kết với bảng `acc_khachhang`
+    @JoinColumn(name = "user_id", nullable = false)
+    private AccKhachHang user;  // Khách hàng sở hữu giỏ hàng
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private AccKhachHang accKhachHang; // Đảm bảo ánh xạ đúng với AccKhachHang
+    @ManyToOne(fetch = FetchType.LAZY)  // Liên kết với bảng `sanpham`
+    @JoinColumn(name = "product_id", nullable = false)
+    private SanPham product;  // Sản phẩm trong giỏ hàng
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "quantity", nullable = false)
+    private int quantity;  // Số lượng sản phẩm trong giỏ hàng
 }

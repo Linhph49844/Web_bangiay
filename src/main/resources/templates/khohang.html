@@ -2,61 +2,104 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Kho Hàng - Shop Giày Online</title>
+    <title>Quản Lý Sản Phẩm - Shop Giày Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .navbar {
             background: rgba(0, 0, 0, 0.85);
-            padding: 15px;
+            padding: 10px;
         }
 
         .nav-link {
             color: white !important;
             font-size: 1.1em;
-            padding: 10px 15px;
-            transition: transform 0.3s ease, color 0.3s;
+            transition: 0.3s;
         }
 
         .nav-link:hover {
             color: #ff7eb3 !important;
-            transform: scale(1.05);
             text-decoration: underline;
         }
 
+        .search-bar {
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .product-row {
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: #f8f9fa;
+            color: black;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .product-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .product-card th, .product-card td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-card th {
+            background-color: #ff5a5f;
+            color: white;
+        }
+
+        .product-card td {
+            background-color: #f8f9fa;
+        }
+
+        .product-card tr:hover {
+            background-color: #ffcc00;
+        }
+
         .footer {
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.8);
             padding: 20px;
             font-size: 1em;
             box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .table th, .table td {
-            vertical-align: middle;
+        .search-bar form {
+            display: flex;
+            justify-content: center;
         }
 
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f9f9f9;
+        .search-bar input {
+            padding: 15px;
+            border-radius: 50px 0 0 50px;
+            border: 2px solid #ff7eb3;
+            font-size: 1.1em;
+            flex: 1;
         }
 
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .btn-custom {
-            background: #ff5a5f;
+        .search-bar button {
+            padding: 15px 25px;
+            background-color: chartreuse;
             color: white;
-            font-size: 1.2em;
-            transition: background-color 0.3s ease, transform 0.3s;
+            border-radius: 0 50px 50px 0;
+            border: 2px solid #ff7eb3;
+            font-size: 1.1em;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        .btn-custom:hover {
-            background: #ff3b3f;
+        .search-bar button:hover {
+            background-color: #ff5a5f;
             transform: scale(1.05);
         }
     </style>
@@ -77,48 +120,49 @@
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="/nhanvien/hien-thi">🏠 Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="/nhanvien/don-hang">📦 Đơn Hàng</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/nhanvien/hang-ton">👟 Sản Phẩm</a></li> <!-- Changed the icon here to 👟 -->
+                    <li class="nav-item"><a class="nav-link" href="/nhanvien/kho-hang">👟 Sản Phẩm</a></li>
                 </ul>
             </div>
+        </div>
     </nav>
 </header>
 
-<section class="container mt-5">
-    <h1 class="text-center">📦 Kho Hàng</h1>
+<!-- Thanh tìm kiếm -->
+<section class="container search-bar">
+    <form action="/nhanvien/timkiem" method="GET" class="d-flex justify-content-center">
+        <input type="text" name="query" class="form-control w-50" placeholder="Tìm kiếm sản phẩm tồn kho..." required />
+        <button type="submit" class="btn btn-primary ms-2">Tìm kiếm</button>
+    </form>
+</section>
 
-    <!-- Table to display products and quantities -->
-    <table class="table table-striped mt-4">
-        <thead>
-        <tr>
-            <th>ID Sản Phẩm</th>
-            <th>Tên Sản Phẩm</th>
-            <th>Giá</th>
-            <th>Số Lượng Tồn Kho</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Example product data, replace with dynamic data from database -->
-        <tr>
-            <td>#001</td>
-            <td>Giày Nike Air Force 1</td>
-            <td>1,800,000 VND</td>
-            <td>60</td>
-        </tr>
-        <tr>
-            <td>#002</td>
-            <td>Giày Adidas NMD</td>
-            <td>2,000,000 VND</td>
-            <td>50</td>
-        </tr>
-        <tr>
-            <td>#003</td>
-            <td>Converse All Star</td>
-            <td>1,200,000 VND</td>
-            <td>120</td>
-        </tr>
-        <!-- Add more rows dynamically -->
-        </tbody>
-    </table>
+<section class="container mt-4">
+    <!-- Bảng sản phẩm -->
+    <div class="product-row">
+        <div class="col">
+            <div class="product-card">
+                <h5 class="text-center mt-3">Danh Sách Sản Phẩm Tồn Kho</h5>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Danh Mục</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Giá</th>
+                        <th>Số Lượng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Lặp qua các sản phẩm -->
+                    <tr th:each="sanPham : ${listSanPham}">
+                        <td th:text="${sanPham.danhMuc.name}"></td>
+                        <td th:text="${sanPham.name}"></td>
+                        <td th:text="'Giá: ' + ${sanPham.price} + ' VND'"></td>
+                        <td th:text="'Số lượng còn: ' + ${sanPham.quantity}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </section>
 
 <footer class="footer text-white text-center p-3 mt-4">
@@ -126,6 +170,5 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

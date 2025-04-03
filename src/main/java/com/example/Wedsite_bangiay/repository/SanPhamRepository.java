@@ -10,5 +10,7 @@ import java.util.List;
 public interface SanPhamRepository extends JpaRepository<SanPham, Long> {
     // Tìm sản phẩm theo danh mục
     List<SanPham> findByDanhMucId(Long danhMucId);
+    
+    // Tìm sản phẩm theo tên
     List<SanPham> findByNameContainingIgnoreCase(String name);
 }
